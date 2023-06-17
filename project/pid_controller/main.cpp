@@ -81,6 +81,26 @@ double angle_between_points(double x1, double y1, double x2, double y2){
   return atan2(y2-y1, x2-x1);
 }
 
+int shortest_distance_index(vector<double>& x_points, vector<double>& y_points, double x_position, double y_position) {
+  int index = 0;
+  double dist_min = 0;
+  for (int i = 0; i < x_points.size(); ++i) {
+    // calc distance between planner points and vehicle position
+    double distance = pow((x_position - x_points[i]), 2) + pow((y_position - y_points[i]), 2);
+
+    if (i == 0) {
+      dist_min = distance;
+    } else {
+      // Check if new dist is less than existing min distance
+      if (distance < dist_min) {
+        index = i;
+        dist_min = distance;
+      }
+    }
+  }
+  return index;
+}
+
 BehaviorPlannerFSM behavior_planner(
       P_LOOKAHEAD_TIME, P_LOOKAHEAD_MIN, P_LOOKAHEAD_MAX, P_SPEED_LIMIT,
       P_STOP_THRESHOLD_SPEED, P_REQ_STOPPED_TIME, P_REACTION_TIME,
@@ -279,6 +299,9 @@ int main ()
 
           path_planner(x_points, y_points, v_points, yaw, velocity, goal, is_junction, tl_state, spirals_x, spirals_y, spirals_v, best_spirals);
 
+          // Calculate Shortest Distance Index
+          int shortest_dist_ind = shortest_distance_index(x_points, y_points, x_position, y_position);
+
           // Save time and compute delta time
           time(&timer);
           new_delta_time = difftime(timer, prev_timer);
@@ -303,7 +326,7 @@ int main ()
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
-          error_steer = angle_between_points(x_points[x_points.size() - 1], y_points[y_points.size() - 1], x_position, y_position) - yaw;
+          error_steer = angle_between_points(x_points[shortest_dist_ind], y_points[shortest_dist_ind], x_position, y_position) - yaw;
 
           /**
           * TODO (step 3): uncomment these lines
@@ -337,7 +360,7 @@ int main ()
           * TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
-          error_throttle = v_points[v_points.size() - 1] - velocity;
+          error_throttle = v_points[shortest_dist_ind] - velocity;
 
 
 
