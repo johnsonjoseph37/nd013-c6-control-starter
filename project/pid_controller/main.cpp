@@ -248,8 +248,8 @@ int main ()
   PID pid_steer = PID();
   PID pid_throttle = PID();
 
-  pid_steer.Init(0.35, 0.002, 0.10, 1.2, -1.2);
-  pid_throttle.Init(0.35, 0.002, 0.10, 1, -1);
+  pid_steer.Init(0.08, 0.02, 0.008, 1.2, -1.2);
+  pid_throttle.Init(0.06, 0.08, 0.008, 1, -1);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -326,7 +326,7 @@ int main ()
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
-          error_steer = angle_between_points(x_points[shortest_dist_ind], y_points[shortest_dist_ind], x_position, y_position) - yaw;
+          error_steer = angle_between_points(x_position, y_position, x_points[shortest_dist_ind], y_points[shortest_dist_ind]) - yaw;
 
           /**
           * TODO (step 3): uncomment these lines
