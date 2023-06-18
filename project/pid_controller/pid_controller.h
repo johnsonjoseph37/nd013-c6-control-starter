@@ -17,9 +17,8 @@ public:
     /*
     * Errors
     */
-     double curr_cte;
-     double diff_cte;
      double prev_cte;
+     double diff_cte;
      double total_cte;
 
     /*
