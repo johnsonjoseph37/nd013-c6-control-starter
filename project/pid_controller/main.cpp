@@ -248,8 +248,14 @@ int main ()
   PID pid_steer = PID();
   PID pid_throttle = PID();
 
-  pid_steer.Init(0.08, 0.02, 0.008, 1.2, -1.2);
-  pid_throttle.Init(0.06, 0.08, 0.008, 1, -1);
+  /**
+  * 1. I started with all zeros and slightly increasing values. But it did not go anywhere. 
+  * 2. I searched for strategies manual PID tuning on the general internet, but none of them gave any satisfactory results.
+  * 3. Finally, I got a set of starting coefficients from the Udacity Knowledge Portal, that worked.
+  * 4. However, I realized that this is not deterministic, and different runs with the same values causes different behavior.
+  **/
+  pid_steer.Init(0.29, 0.0011, 0.3, 1.2, -1.2);
+  pid_throttle.Init(0.21, 0.0009, 0.1, 1, -1);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
