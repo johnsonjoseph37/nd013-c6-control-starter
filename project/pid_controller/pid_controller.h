@@ -25,8 +25,8 @@ public:
     * Coefficients
     */
      double Kp;
-     double Ki;
      double Kd;
+     double Ki;
 
     /*
     * Output limits
@@ -52,7 +52,7 @@ public:
     /*
     * Initialize PID.
     */
-    void Init(double Kp, double Ki, double Kd, double output_lim_max, double output_lim_min);
+    void Init(double Kp, double Kd, double Ki, double output_lim_max, double output_lim_min);
 
     /*
     * Update the PID error variables given cross track error.

@@ -254,8 +254,8 @@ int main ()
   * 3. Finally, I got a set of starting coefficients from the Udacity Knowledge Portal, that worked.
   * 4. However, I realized that this is not deterministic, and different runs with the same values causes different behavior.
   **/
-  pid_steer.Init(0.29, 0.0011, 0.3, 1.2, -1.2);
-  pid_throttle.Init(0.21, 0.0009, 0.1, 1, -1);
+  pid_steer.Init(0.29, 0.3, 0.0011, 1.2, -1.2);
+  pid_throttle.Init(0.21, 0.1, 0.0009, 1, -1);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
