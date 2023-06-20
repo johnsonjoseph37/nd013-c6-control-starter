@@ -81,6 +81,7 @@ double angle_between_points(double x1, double y1, double x2, double y2){
   return atan2(y2-y1, x2-x1);
 }
 
+//Find the index in the vector of (x,y) coordinates that is closest to the coordinate (x_position, y_position)
 int shortest_distance_index(vector<double>& x_points, vector<double>& y_points, double x_position, double y_position) {
   int index = 0;
   double dist_min = 0;
@@ -254,7 +255,7 @@ int main ()
   * 3. Finally, I got a set of starting coefficients from the Udacity Knowledge Portal, that worked.
   * 4. However, I realized that this is not deterministic, and different runs with the same values causes different behavior.
   **/
-  pid_steer.Init(0.29, 0.3, 0.0011, 1.2, -1.2);
+  pid_steer.Init(0.29, 0.6, 0.0005, 1.2, -1.2);
   pid_throttle.Init(0.21, 0.1, 0.0009, 1, -1);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
@@ -305,7 +306,8 @@ int main ()
 
           path_planner(x_points, y_points, v_points, yaw, velocity, goal, is_junction, tl_state, spirals_x, spirals_y, spirals_v, best_spirals);
 
-          // Calculate Shortest Distance Index
+          // Calculate Shortest Distance Index. This will be used, instead of the last point in the vector, to calculate steer and throttle error
+          // as it had positive impact on the car's trajectory.
           int shortest_dist_ind = shortest_distance_index(x_points, y_points, x_position, y_position);
 
           // Save time and compute delta time

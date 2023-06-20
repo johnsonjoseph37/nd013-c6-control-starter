@@ -35,6 +35,7 @@ void PID::UpdateError(double cte) {
    /**
    * TODO: Update PID errors based on cte.
    **/
+    //Discretized integrator and derivator. Also, avoid division by zero.
     if (delta_time > 0) {
         diff_cte = (cte - prev_cte) / delta_time;
         total_cte += cte * delta_time;
